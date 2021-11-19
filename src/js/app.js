@@ -46,8 +46,16 @@ const renderGallery = async (pageNumber) => {
 			imgContainer.innerHTML = `
             <p class="img-title">${image.title}</p>
             <img class="img" id="${image.id}" src="${img.src}" alt="${image.title}">
-			<p class="img-exif">${exif}</p>`;
+            <div id="img-exif${image.id}">Exif</div>`;
 			gallery.appendChild(imgContainer);
+			document.getElementById(`img-exif${image.id}`).addEventListener('click', () => {
+				console.log('click');
+				document.getElementById(`img-exif${image.id}`).innerText = `Getting EXIF data...`;
+				fetchExif(image.id).then((exif) => {
+					console.log(exif);
+					document.getElementById(`img-exif${image.id}`).innerHTML = exif;
+				});
+			});
 		});
 	}
 };
@@ -62,6 +70,7 @@ const fetchExif = async (id) => {
 			nojsoncallback: 1
 		}
 	});
+	console.log(response.data.photo);
 	return response.data.photo;
 };
 
