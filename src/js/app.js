@@ -42,18 +42,18 @@ const renderGallery = async (pageNumber) => {
 
 		// Get EXIF data
 		fetchExif(image.id).then((exif) => {
-			console.log(exif);
 			imgContainer.innerHTML = `
             <p class="img-title">${image.title}</p>
             <img class="img" id="${image.id}" src="${img.src}" alt="${image.title}">
             <div id="img-exif${image.id}">Exif</div>`;
 			gallery.appendChild(imgContainer);
 			document.getElementById(`img-exif${image.id}`).addEventListener('click', () => {
-				console.log('click');
-				document.getElementById(`img-exif${image.id}`).innerText = `Getting EXIF data...`;
+				document.getElementById(`img-exif${image.id}`).innerText = `Retrieving EXIF data...`;
 				fetchExif(image.id).then((exif) => {
-					console.log(exif);
-					document.getElementById(`img-exif${image.id}`).innerHTML = exif;
+					let exifCamera = exif.camera || 'Unavailable';
+					console.log(exifCamera);
+					document.getElementById(`img-exif${image.id}`).innerHTML = `
+					<p>Camera: ${exifCamera}</p>`;
 				});
 			});
 		});
@@ -70,7 +70,6 @@ const fetchExif = async (id) => {
 			nojsoncallback: 1
 		}
 	});
-	console.log(response.data.photo);
 	return response.data.photo;
 };
 
