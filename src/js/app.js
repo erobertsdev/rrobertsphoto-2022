@@ -49,11 +49,34 @@ const renderGallery = async (pageNumber) => {
 			gallery.appendChild(imgContainer);
 			document.getElementById(`img-exif${image.id}`).addEventListener('click', () => {
 				document.getElementById(`img-exif${image.id}`).innerText = `Retrieving EXIF data...`;
+				// Render EXIF data under image
 				fetchExif(image.id).then((exif) => {
-					let exifCamera = exif.camera || 'Unavailable';
-					console.log(exifCamera);
+					let exifCamera = exif.camera || 'Unavailable',
+						exifExposure = 'Unavailable',
+						exifAperture = 'Unavailable',
+						exifISO = 'Unavailable',
+						exifFocalLength = 'Unavailable';
+					for (let i = 0; i < exif.exif.length; i++) {
+						if (exif.exif[i].label === 'Exposure') {
+							exifExposure = exif.exif[i].raw._content || 'Unavailable';
+						}
+						if (exif.exif[i].label === 'Aperture') {
+							exifAperture = exif.exif[i].raw._content || 'Unavailable';
+						}
+						if (exif.exif[i].label === 'ISO Speed') {
+							exifISO = exif.exif[i].raw._content || 'Unavailable';
+						}
+						if (exif.exif[i].label === 'Focal Length') {
+							exifFocalLength = exif.exif[i].raw._content || 'Unavailable';
+						}
+					}
+					console.log(exif);
 					document.getElementById(`img-exif${image.id}`).innerHTML = `
-					<p>Camera: ${exifCamera}</p>`;
+					<p>Camera: ${exifCamera}</p>
+					<p>Exposure Time: ${exifExposure}</p>
+					<p>Aperture: ${exifAperture}</p>
+					<p>ISO: ${exifISO}</p>
+					<p>Focal Length: ${exifFocalLength}</p>`;
 				});
 			});
 		});
