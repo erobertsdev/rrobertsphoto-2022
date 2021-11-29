@@ -71,12 +71,22 @@ const renderGallery = async (pageNumber) => {
 						}
 					}
 					console.log(exif);
-					document.getElementById(`img-exif${image.id}`).innerHTML = `
+					if (
+						exifCamera === 'Unavailable' &&
+						exifExposure === 'Unavailable' &&
+						exifAperture === 'Unavailable' &&
+						exifISO === 'Unavailable' &&
+						exifFocalLength === 'Unavailable'
+					) {
+						document.getElementById(`img-exif${image.id}`).innerHTML = `<p>No EXIF data available.</p>`;
+					} else {
+						document.getElementById(`img-exif${image.id}`).innerHTML = `
 					<p>Camera: ${exifCamera}</p>
 					<p>Exposure Time: ${exifExposure}</p>
 					<p>Aperture: ${exifAperture}</p>
 					<p>ISO: ${exifISO}</p>
 					<p>Focal Length: ${exifFocalLength}</p>`;
+					}
 				});
 			});
 		});
