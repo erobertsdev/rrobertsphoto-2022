@@ -45,7 +45,10 @@ const renderGallery = async (pageNumber) => {
 			imgContainer.innerHTML = `
             <p class="img-title">${image.title}</p>
             <img class="img" id="${image.id}" src="${img.src}" alt="${image.title}">
-            <div id="img-exif${image.id}">Exif</div>`;
+			<div class="img-buttons">
+            <div class="img-btn img-exif" id="img-exif${image.id}">Exif</div>
+			<div class="img-btn img-fullsize" id="img-fullsize${image.id}">Full Size</div>
+			</div>`;
 			gallery.appendChild(imgContainer);
 			document.getElementById(`img-exif${image.id}`).addEventListener('click', () => {
 				document.getElementById(`img-exif${image.id}`).innerHTML = `
