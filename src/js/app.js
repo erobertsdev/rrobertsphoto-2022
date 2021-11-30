@@ -48,7 +48,9 @@ const renderGallery = async (pageNumber) => {
             <div id="img-exif${image.id}">Exif</div>`;
 			gallery.appendChild(imgContainer);
 			document.getElementById(`img-exif${image.id}`).addEventListener('click', () => {
-				document.getElementById(`img-exif${image.id}`).innerText = `Retrieving EXIF data...`;
+				document.getElementById(`img-exif${image.id}`).innerHTML = `
+				<div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+				<p class="exif-loading">Retrieving EXIF data...</p>`;
 				// Render EXIF data under image
 				fetchExif(image.id).then((exif) => {
 					let exifCamera = exif.camera || 'Unavailable',
@@ -70,7 +72,7 @@ const renderGallery = async (pageNumber) => {
 							exifFocalLength = exif.exif[i].raw._content || 'Unavailable';
 						}
 					}
-					console.log(exif);
+					// Checks if no EXIF data is available and displays message
 					if (
 						exifCamera === 'Unavailable' &&
 						exifExposure === 'Unavailable' &&
@@ -88,6 +90,7 @@ const renderGallery = async (pageNumber) => {
 					<p>Focal Length: ${exifFocalLength}</p>`;
 					}
 				});
+				document.getElementById(`img-exif${image.id}`).removeEventListener('click');
 			});
 		});
 	}
